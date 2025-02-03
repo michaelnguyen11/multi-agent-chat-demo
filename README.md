@@ -10,10 +10,10 @@ Our demo showcases specialized agents, each designed for specific use cases:
 
 | Agent | Technology | Purpose |
 |-------|------------|---------|
-| Business Analyst Agent | Bedrock LLM | Provides functional requirements, non-functional requirements and break down user stories from business requirement |
-| Math Agent | Bedrock LLM + Calculator Tools | Performs complex calculations and solves mathematical problems with custom tools |
+| Business Analyst Agent | Bedrock LLM | Uses the stakeholder’s business requirement to generate the foundational documentation (including business goals, functional and non-functional requirements, and draft user stories) that will form the basis for the BRD and FSD.|
+| Product Owner Agent | Bedrock LLM | Converts the business requirement into detailed sprint backlog items that are refined, prioritized, and include all necessary details (title, description, acceptance criteria, dependencies, estimated effort, potential blockers, and suggested priority). |
+| Project Manager Agent | Bedrock LLM | Develops a comprehensive sprint plan and status report from the business requirement, outlining sprint objectives, deliverables, progress metrics, risk summary, and upcoming milestones, ensuring that the sprint is well-planned and monitored. |
 | **Tech Agent** | Bedrock LLM + Knowledge Base | Offers technical support and documentation assistance with direct access to **Multi-Agent Orchestrator framework source code** |
-| Health Agent | Bedrock LLM | Provides health and wellness guidance, including fitness advice and general health information |
 
 The demo highlights the system's ability to handle complex, multi-turn conversations while preserving context and leveraging specialized agents across various domains.
 
@@ -39,45 +39,29 @@ Follow these steps to deploy the demo chat web application:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/awslabs/multi-agent-orchestrator.git
-   cd multi-agent-orchestrator
+   git clone https://github.com/michaelnguyen11/multi-agent-chat-demo.git
+   cd multi-agent-chat-demo
    ```
 
-2. **Navigate to the Demo Web App Directory**:
-   ```bash
-   cd examples/chat-demo-app
-   ```
-
-3. **Install Dependencies**:
+2. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-4. **Bootstrap AWS CDK**:
+3. **Bootstrap AWS CDK**:
    ```bash
    cdk bootstrap
    ```
 
-5. **Review and Customize the Stack** (optional):
-   Open `chat-demo-app/cdk.json` and review the configuration. You can customize aspects of the deployment by enabling or disabling additional agents.
+4. **Review and Customize the Stack** (optional):
+   Open `cdk.json` and review the configuration. You can customize aspects of the deployment by enabling or disabling additional agents.
 
-   ```json
-   {
-     "context": {
-       "enableLexAgent": true
-       // Additional configurations
-     }
-   }
-   ```
-
-   **enableLexAgent:** Enable the sample Airlines Bot (See AWS Blogpost [here](https://aws.amazon.com/blogs/machine-learning/automate-the-customer-service-experience-for-flight-reservations-using-amazon-lex/))
-
-6. **Deploy the Application**:
+5. **Deploy the Application**:
    ```bash
    cdk deploy --all
    ```
 
-7. **Create a user in Amazon Cognito user pool**:
+6. **Create a user in Amazon Cognito user pool**:
    ```bash
    aws cognito-idp admin-create-user \
        --user-pool-id your-region_xxxxxxx  \
@@ -101,11 +85,10 @@ To ensure the deployment was successful:
 
 1. Open the web app URL in your browser
 2. Try different types of queries:
-   - Travel bookings
-   - Weather checks
-   - Math problems
+   - Business Analyst questions
+   - Product Owner questions
+   - Project Manager questions
    - Technical questions
-   - Health inquiries
 3. Test follow-up questions to see context retention
 4. Observe agent switching for different topics
 

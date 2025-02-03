@@ -2,8 +2,8 @@ import { Logger } from "@aws-lambda-powertools/logger";
 import {
   MultiAgentOrchestrator,
   BedrockLLMAgent,
+  BedrockLLMAgentOptions,
   DynamoDbChatStorage,
-  LexBotAgent,
   AmazonKnowledgeBasesRetriever,
   LambdaAgent,
   BedrockClassifier,
@@ -56,31 +56,34 @@ const orchestrator = new MultiAgentOrchestrator({
 });
 
 
-const BaAgent = new BedrockLLMAgent({
+const baAgent = new BedrockLLMAgent({
   name: "Business Analyst Agent",
   description:
-    "Business Analyst Assistant designed to support business analysts by generating draft documentation from provided business requirements and business goals.",
-});
+    "The Business Analyst Assistant that transforms stakeholder business requirements into foundational documents used to create a Business Requirements Document (BRD) and a Functional Specification Document (FSD).",
+  modelId: "anthropic.claude-3-5-sonnet-20240620-v1:0",
+} as BedrockLLMAgentOptions);
 
-BaAgent.setSystemPrompt(BA_AGENT_PROMPT);
+baAgent.setSystemPrompt(BA_AGENT_PROMPT);
 
 
-const PoAgent = new BedrockLLMAgent({
+const poAgent = new BedrockLLMAgent({
   name: "Product Owner Agent",
   description:
-    "Product Owner Assistant designed to support product owners by refining and prioritizing agile backlog items.",
-});
+    "The Product Owner Assistant that transforms stakeholder business requirements into detailed sprint backlog items.",
+  modelId: "anthropic.claude-3-5-sonnet-20240620-v1:0",
+} as BedrockLLMAgentOptions);
 
-PoAgent.setSystemPrompt(PO_AGENT_PROMPT);
+poAgent.setSystemPrompt(PO_AGENT_PROMPT);
 
 
-const PmAgent = new BedrockLLMAgent({
+const pmAgent = new BedrockLLMAgent({
   name: "Product Manager Agent",
   description:
-    "Project Manager Assistant designed to support project managers by generating comprehensive project status reports using data retrieved from a JIRA board.",
-});
+    "The Project Manager Assistant that transforms stakeholder business requirements into a comprehensive sprint plan and status report.",
+  modelId: "anthropic.claude-3-5-sonnet-20240620-v1:0",
+} as BedrockLLMAgentOptions);
 
-PmAgent.setSystemPrompt(PM_AGENT_PROMPT);
+pmAgent.setSystemPrompt(PM_AGENT_PROMPT);
 
 
 if (process.env.LAMBDA_AGENTS){
@@ -101,6 +104,7 @@ const maoDocAgent = new BedrockLLMAgent({
   name: "Tech agent",
   description:
     "A tech expert specializing in the multi-agent orchestrator framework, technical domains, and AI-driven solutions.",
+  modelId: "anthropic.claude-3-5-sonnet-20240620-v1:0",
   streaming: true,
   inferenceConfig: {
     temperature: 0.0,
@@ -149,9 +153,9 @@ const maoDocAgent = new BedrockLLMAgent({
 orchestrator.addAgent(maoDocAgent);
 
 //orchestrator.addAgent(techAgent);
-orchestrator.addAgent(BaAgent);
-orchestrator.addAgent(PoAgent);
-orchestrator.addAgent(PmAgent);
+orchestrator.addAgent(baAgent);
+orchestrator.addAgent(poAgent);
+orchestrator.addAgent(pmAgent);
 
 const greetingAgent = new BedrockLLMAgent({
   name: "Greeting Agent",

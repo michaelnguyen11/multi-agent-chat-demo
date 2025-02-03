@@ -7,7 +7,6 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import { Construct } from 'constructs';
 import * as path from "path";
-import { LexAgentConstruct } from './lex-agent-construct';
 import { BedrockKnowledgeBase } from './knowledge-base-construct';
 import {BedrockKnowledgeBaseModels } from './constants';
 
@@ -17,21 +16,6 @@ export class ChatDemoStack extends cdk.Stack {
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
-
-    const enableLexAgent = this.node.tryGetContext('enableLexAgent');
-
-    let lexAgent = null;
-    let lexAgentConfig = {};
-    if (enableLexAgent === true){
-      lexAgent = new LexAgentConstruct(this, "LexAgent");
-      lexAgentConfig = {
-        botId: lexAgent.lexBotId,
-        botAliasId: lexAgent.lexBotAliasId,
-        localeId: "en_US",
-        description: lexAgent.lexBotDescription,
-        name: lexAgent.lexBotName,
-      }
-    }
 
     const documentsBucket = new s3.Bucket(this, 'DocumentsBucket', {
       enforceSSL:true,
@@ -51,7 +35,7 @@ export class ChatDemoStack extends cdk.Stack {
     const knowledgeBase = new BedrockKnowledgeBase(this, 'MutiAgentOrchestratorDocKb', {
       kbName:'Multi-agent-orchestrator-doc-kb',
       assetFiles:[],
-      embeddingModel: BedrockKnowledgeBaseModels.TITAN_EMBED_TEXT_V1,
+      embeddingModel: BedrockKnowledgeBaseModels.COHERE_EMBED_ENGLISH_V3,
     });
 
     const maoFilesDeployment = new s3deploy.BucketDeployment(this, "DeployDocumentation", {
@@ -118,8 +102,6 @@ export class ChatDemoStack extends cdk.Stack {
           HISTORY_TABLE_NAME: sessionTable.tableName,
           HISTORY_TABLE_TTL_KEY_NAME: 'TTL',
           HISTORY_TABLE_TTL_DURATION: '3600',
-          LEX_AGENT_ENABLED: enableLexAgent.toString(),
-          LEX_AGENT_CONFIG: JSON.stringify(lexAgentConfig),
           KNOWLEDGE_BASE_ID: knowledgeBase.knowledgeBase.attrKnowledgeBaseId,
           LAMBDA_AGENTS: JSON.stringify(
             [{description:"This is an Agent to use when you forgot about your own name",name:'Find my name',functionName:pythonLambda.functionName, region:cdk.Aws.REGION}]),
@@ -175,21 +157,5 @@ export class ChatDemoStack extends cdk.Stack {
     });
 
     this.multiAgentLambdaFunctionUrl = multiAgentLambdaFunctionUrl;
-
-    if (enableLexAgent){
-      multiAgentLambdaFunction.addToRolePolicy(
-        new iam.PolicyStatement({
-          effect: iam.Effect.ALLOW,
-          sid: 'LexPermission',
-          actions: [
-            "lex:RecognizeText",
-          ],
-          resources: [
-            `arn:aws:bedrock:${cdk.Aws.REGION}::foundation-model/*`,
-            `arn:aws:lex:${cdk.Aws.REGION}:${cdk.Aws.ACCOUNT_ID}:bot-alias/${lexAgent!.lexBotId}/${lexAgent!.lexBotAliasId}`
-          ],
-        })
-      );
-    }
   }
 }

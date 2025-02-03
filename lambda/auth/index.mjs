@@ -4,7 +4,7 @@ import {
 } from "@aws-sdk/client-secrets-manager";
 import { fromBase64 } from "@aws-sdk/util-base64-node";
 
-const client = new SecretsManagerClient({ region: "us-east-1" });
+const client = new SecretsManagerClient({ region: "ap-northeast-1" });
 const secretName = "UserPoolSecretConfig";
 
 import * as jose from "jose";
@@ -17,7 +17,7 @@ const { createHash, createHmac } = await import("node:crypto");
 const credentialProvider = fromNodeProviderChain();
 const credentials = await credentialProvider();
 
-const REGION = "us-east-1";
+const REGION = "ap-northeast-1";
 
 const getSecrets = async () => {
   try {
