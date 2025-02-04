@@ -2,7 +2,6 @@ import { Logger } from "@aws-lambda-powertools/logger";
 import {
   MultiAgentOrchestrator,
   BedrockLLMAgent,
-  BedrockLLMAgentOptions,
   DynamoDbChatStorage,
   AmazonKnowledgeBasesRetriever,
   LambdaAgent,
@@ -61,7 +60,7 @@ const baAgent = new BedrockLLMAgent({
   description:
     "The Business Analyst Assistant that transforms stakeholder business requirements into foundational documents used to create a Business Requirements Document (BRD) and a Functional Specification Document (FSD).",
   modelId: "anthropic.claude-3-5-sonnet-20240620-v1:0",
-} as BedrockLLMAgentOptions);
+});
 
 baAgent.setSystemPrompt(BA_AGENT_PROMPT);
 
@@ -71,7 +70,7 @@ const poAgent = new BedrockLLMAgent({
   description:
     "The Product Owner Assistant that transforms stakeholder business requirements into detailed sprint backlog items.",
   modelId: "anthropic.claude-3-5-sonnet-20240620-v1:0",
-} as BedrockLLMAgentOptions);
+});
 
 poAgent.setSystemPrompt(PO_AGENT_PROMPT);
 
@@ -81,7 +80,7 @@ const pmAgent = new BedrockLLMAgent({
   description:
     "The Project Manager Assistant that transforms stakeholder business requirements into a comprehensive sprint plan and status report.",
   modelId: "anthropic.claude-3-5-sonnet-20240620-v1:0",
-} as BedrockLLMAgentOptions);
+});
 
 pmAgent.setSystemPrompt(PM_AGENT_PROMPT);
 
@@ -176,8 +175,6 @@ const agentList = Object.entries(agents)
   })
   .join('\n\n');
 greetingAgent.setSystemPrompt(GREETING_AGENT_PROMPT(agentList));
-
-
 
 orchestrator.addAgent(greetingAgent);
 

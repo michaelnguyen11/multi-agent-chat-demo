@@ -12,15 +12,15 @@ const chatDemoStack = new ChatDemoStack(app, 'ChatDemoStack', {
     account: process.env.CDK_DEFAULT_ACCOUNT
   },
   crossRegionReferences: true,
-  description: "Multi Agent Orchestrator Chat Demo Application (uksb-2mz8io1d9k)"
+  description: "Multi Agent Orchestrator Chat Demo Application"
 });
 
 new UserInterfaceStack(app, 'UserInterfaceStack', {
   env: {
-    region: 'ap-northeast-1',
+    region: 'us-east-1',
     account: process.env.CDK_DEFAULT_ACCOUNT,
   },
   crossRegionReferences: true,
-  description: "Multi Agent Orchestrator User Interface (uksb-2mz8io1d9k)",
+  description: "Multi Agent Orchestrator User Interface",
   multiAgentLambdaFunctionUrl: chatDemoStack.multiAgentLambdaFunctionUrl,
 });

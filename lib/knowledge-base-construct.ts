@@ -73,7 +73,7 @@ export class BedrockKnowledgeBase extends Construct {
         this.accountId = Stack.of(this).account;
         this.region = Stack.of(this).region;
 
-        this.embeddingModel = props.embeddingModel ?? BedrockKnowledgeBaseModels.COHERE_EMBED_ENGLISH_V3;
+        this.embeddingModel = props.embeddingModel ?? BedrockKnowledgeBaseModels.TITAN_EMBED_TEXT_V1;
         this.knowledgeBaseName = props.kbName;
         this.addAssetFiles(props.assetFiles);
         this.kbRole = this.createRoleForKB();

@@ -33,7 +33,7 @@ export class ChatDemoStack extends cdk.Stack {
     const assetPyDoc = s3deploy.Source.asset(assetsPyPath);
 
     const knowledgeBase = new BedrockKnowledgeBase(this, 'MutiAgentOrchestratorDocKb', {
-      kbName:'Multi-agent-orchestrator-doc-kb',
+      kbName:'multi-agent-orchestrator-doc-kb',
       assetFiles:[],
       embeddingModel: BedrockKnowledgeBaseModels.COHERE_EMBED_ENGLISH_V3,
     });

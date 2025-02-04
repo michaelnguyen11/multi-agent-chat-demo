@@ -27,6 +27,7 @@ export class BedrockKbConstruct extends Construct {
     this.knowledgeBaseId = knowledgeBase.knowledgeBaseId;
 
     const documentsBucket = new s3.Bucket(this, 'DocumentsBucket', {
+      bucketName: 'Multi-Agent-Orchestrator-Documents',
       enforceSSL:true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
