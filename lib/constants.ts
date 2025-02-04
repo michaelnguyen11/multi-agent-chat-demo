@@ -11,7 +11,7 @@ export const DEFAULT_BLOCKED_OUTPUT_MESSAGE = 'Unable to process. Query violates
 
 export class BedrockKnowledgeBaseModels {
 
-    public static readonly TITAN_EMBED_TEXT_V1 = new BedrockKnowledgeBaseModels("amazon.titan-embed-text-v1", 1536);
+    public static readonly TITAN_EMBED_TEXT_V2 = new BedrockKnowledgeBaseModels("amazon.titan-embed-text-v2:0", 1024);
     public static readonly COHERE_EMBED_ENGLISH_V3 = new BedrockKnowledgeBaseModels("cohere.embed-english-v3", 1024);
     public static readonly COHERE_EMBED_MULTILINGUAL_V3 = new BedrockKnowledgeBaseModels("cohere.embed-multilingual-v3", 1024);
 

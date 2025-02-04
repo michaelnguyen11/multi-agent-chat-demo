@@ -35,7 +35,7 @@ export class ChatDemoStack extends cdk.Stack {
     const knowledgeBase = new BedrockKnowledgeBase(this, 'MutiAgentOrchestratorDocKb', {
       kbName:'multi-agent-orchestrator-doc-kb',
       assetFiles:[],
-      embeddingModel: BedrockKnowledgeBaseModels.COHERE_EMBED_ENGLISH_V3,
+      embeddingModel: BedrockKnowledgeBaseModels.TITAN_EMBED_TEXT_V2,
     });
 
     const maoFilesDeployment = new s3deploy.BucketDeployment(this, "DeployDocumentation", {
